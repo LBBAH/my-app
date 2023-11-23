@@ -46,7 +46,11 @@
         "https://code.jquery.com/jquery-2.1.1.min.js",
         "https://www.paypal.com/sdk/js?client-id=ARBPZIpAHtSK4UrxFRNfF8QA1MZcSQBtSGl5kO0Slw-GYIB6ntWCjd0DGDTZJPru1Y6gcmxd9MKVfNeu&currency=MXN",
         "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js",
-        "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+        "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css",
+        "https://o4506214875856896.ingest.sentry.io/api/4506214878937088/envelope/?sentry_key=b06d64f82064604c8635ecce64ed751f&sentry_version=7&sentry_client=sentry.javascript.angular-ivy%2F7.80.0",
+        "https://my-app-phi-coral-81.vercel.app/ngsw.json?ngsw-cache-bust=0.02400286174080435",
+        "https://educacionespecialmx.site/imgAppWeb/istockphoto-1130522927-612x612.jpg",
+        "https://educacionespecialmx.site/idd_Educatio_back/public_html/api/getTypeRecurs"        
         
 
       ],
