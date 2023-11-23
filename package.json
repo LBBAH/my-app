@@ -8,6 +8,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "start-pwa": "ng build --base-href=/ && http-server -p 8080 -c-1 dist/my-app"
+
+
   },
   "private": true,
   "dependencies": {
