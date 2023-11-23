@@ -26,5 +26,37 @@
         ]
       }
     }
+  ],
+  "dataGroups": [
+    {
+      "name":"data-api",
+      "urls":[
+        "https://educacionespecialmx.site/idd_Educatio_back/public_html/api",
+        "https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu4mxKKTU1Kg.woff2",
+        "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css",
+        "https://fonts.gstatic.com/s/staatliches/v13/HI_OiY8KO6hCsQSoAPmtMYebvpCfOMPT.woff2",
+        "https://my-app-phi-coral-81.vercel.app/assets/img/logoNavbar.png",
+        "https://my-app-phi-coral-81.vercel.app/assets/img/logotipo2.png",
+        "https://brayanahernandez.000webhostapp.com/img/icons8-men%C3%BA-48.png",
+        "https://educacionespecialmx.site/imgAppWeb/icons8-atr%C3%A1s-52.png",
+        "https://educacionespecialmx.site/imgAppWeb/userimage.png",
+        "https://fonts.gstatic.com/s/roboto/v30/KFOlCnqEu92Fr1MmEU9fBBc4AMP6lQ.woff2",
+        "https://my-app-phi-coral-81.vercel.app/ngsw.json?ngsw-cache-bust=0.482122894272893",
+        "https://www.youtube.com/iframe_api",
+        "https://code.jquery.com/jquery-2.1.1.min.js",
+        "https://www.paypal.com/sdk/js?client-id=ARBPZIpAHtSK4UrxFRNfF8QA1MZcSQBtSGl5kO0Slw-GYIB6ntWCjd0DGDTZJPru1Y6gcmxd9MKVfNeu&currency=MXN",
+        "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js",
+        "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+        
+
+      ],
+      "cacheConfig": {
+        "strategy": "freshness",
+        "maxSize": 5,
+        "maxAge": "50m",
+        "timeout": "5s"
+      }
+
+    }
   ]
 }
