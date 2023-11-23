@@ -6,14 +6,14 @@
   <div style="margin:20px">
     <h2>Vista previa de curso</h2>
   </div>
-  <div style="display: flex;">
-    <div [style.background-image]="'url(' + (editCurso.vistaprevia === '' ? 'http://127.0.0.1:8000/img/imgVistaRecursos/Vista previa.png' : 'http://127.0.0.1:8000/img/imgVistaRecursos/' + editCurso.vistaprevia) + ')'" style="background-size: 100% 100%;width: 50%; height: 300px;">        
+  <div class="contenedorMultimedia">
+    <div [style.background-image]="'url(' + (editCurso.vistaprevia === '' ? 'http://127.0.0.1:8000/img/imgVistaRecursos/Vista previa.png' : 'http://127.0.0.1:8000/img/imgVistaRecursos/' + editCurso.vistaprevia) + ')'" class="backgroundVistaPrevia">
     </div>
-    <div style="padding: 20px; width: 50%;">    
+    <div class="contenedorMultimedia-formulario">
       <form enctype="multipart/form-data" [formGroup]="formNewimg" >
         <input class="imgImput" type="file" formControlName="file" id="file"  (change)="imagenUp($event)" accept=".png"/>
-          <label class="labelimgUser" for="file">Cargar vista previa.png</label>
-          <button class="buttonImgUser" (click)="imagensXD()">Cambiar foto</button>
+        <label class="labelimgUser" for="file">Click para Cargar vista previa.png</label>
+        <button class="buttonImgUser" (click)="imagensXD()">Cambiar foto</button>
       </form>
     </div>
   </div>
@@ -83,57 +83,103 @@
     </div>
   </div>
 
-
-
-
   <div style="margin:20px">
     <h2>Objetivos de curso</h2>
   </div>
   <div style="max-width: 100%;">
     <form [formGroup]="NewobjetivoCUrsos">
       <input type="text" class="form-control" formControlName="objetivo" placeholder="Nuevo Objetivo" style="margin: 10px;">      
-      <button type="button" class="btn btn-secondary" style="margin: 10px;">Crear</button>    
+      <button type="button" class="btn btn-secondary" style="margin: 10px;" (click)="nuevoObjetivo()">Crear</button>    
     </form>    
   </div>
   <div style="display: block;" class="container">
-   <div style="max-width: 100%; padding-bottom: 10px;" *ngFor="let seccion of seccions" >
-      <p>Objetivos: {{seccion.descripcion}}</p>                  
+   <div style="max-width: 100%; padding-bottom: 10px;" *ngFor="let objetivo of objetivos" >
+      <p>Objetivos: {{objetivo.objetivo}}</p>                  
      
       <div style="max-width: 100%; text-align: end;">
-        <button type="button" class="btn btn-primary">Editar</button>
-        <button type="button" class="btn btn-warning">Borrar</button>
+        <button type="button" class="btn btn-primary" (click)="editarobjetivoCurso(objetivo.objetivo, objetivo.id)">Editar</button>
+        <button type="button" class="btn btn-warning" (click)="borrarobjetivoCurso(objetivo.id)">Borrar</button>
       </div>
    </div>
   </div>
-
-
-
 
   <div style="margin:20px">
     <h2>Secciones de curso</h2>
   </div>
   <div style="max-width: 100%;">
-    <form action="">
-      <input type="text" class="form-control" placeholder="Nombre seccion" style="margin: 10px;">
-      <input type="text" class="form-control" placeholder="Descripcion" style="margin: 10px;">
-      <input type="text" class="form-control" placeholder="Id video de youtube" style="margin: 10px;">
-      <button type="button" class="btn btn-secondary" style="margin: 10px;">Nueva seccion</button>    
+    <form enctype="multipart/form-data" [formGroup]="NewSeccionCUrsos" >
+      <input type="text" class="form-control" formControlName="nombre" placeholder="Nombre seccion" style="margin: 10px;">
+      <input type="text" class="form-control" formControlName="descripcion" placeholder="Descripcion" style="margin: 10px;">      
+      <button type="button" class="btn btn-secondary" style="margin: 10px;" (click)="registrarNuevaSeccion()">Nueva seccion</button>    
     </form>    
   </div>
   <div style="display: block;" class="container">
    <div style="max-width: 100%; padding-bottom: 10px;" *ngFor="let seccion of seccions" >
       <h4>Tema: {{seccion.nombre}}</h4>            
-      <p>Descrpcion: {{seccion.descripcion}}</p>      
-      <p>id_video: {{seccion.url}}</p>
-      <youtube-player id="player"></youtube-player>
-     
+      <p>Descrpcion: {{seccion.descripcion}}</p>            
+    
+      <div class="contenedorMultimedia">
+        <div class="contenedorMultimedia-hijo">
+          <vg-player (onPlayerReady)="onPlayerReady($event)">
+              <vg-overlay-play></vg-overlay-play>
+              <vg-buffering></vg-buffering>
+          
+              <vg-controls>
+                  <vg-play-pause></vg-play-pause>
+                  <vg-playback-button></vg-playback-button>
+          
+                  <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
+          
+                  <vg-scrub-bar>
+                      <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+                      <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
+                  </vg-scrub-bar>
+          
+                  <vg-time-display vgProperty="left" vgFormat="mm:ss"></vg-time-display>
+                  <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
+          
+                  <vg-track-selector></vg-track-selector>
+                  <vg-mute></vg-mute>
+                  <vg-volume></vg-volume>
+          
+                  <vg-fullscreen></vg-fullscreen>
+              </vg-controls>
+          
+              <video [vgMedia]="$any(media)" #media id="singleVideo" preload="auto" origin>
+                <source src="http://127.0.0.1:8000/videos/cursos/{{seccion.url}}" type="video/mp4">
+            </video>
+          </vg-player>        
+        </div>
+
+        <div class="contenedorMultimedia-formulario">
+          <form [formGroup]="formNewvideos" enctype="multipart/form-data">
+            <input class="imgImput" type="file" formControlName="video" id="video"  (change)="videoUp($event)" accept=".mp4"/>
+            <label class="labelimgUser" for="video">Tus videos no deben pesar mas de 100MB .mp4</label>
+            <button class="buttonImgUser" (click)="videoXD(seccion.id)">Cambiar foto</button>
+          </form>
+        </div>
+      </div>
+
+
+
 
       <div style="max-width: 100%; text-align: end;">
-        <button type="button" class="btn btn-primary">Editar</button>
-        <button type="button" class="btn btn-warning">Borrar</button>
+        <button type="button" class="btn btn-primary" (click)="editarSeccionCurso(seccion.id, seccion.nombre, seccion.descripcion)">Editar</button>
+        <button type="button" class="btn btn-warning" (click)="borrarSeccion(seccion.id)">Borrar</button>
       </div>
+
+      
+
    </div>
+   
+    <div>
+      <button type="button" class="btn btn-primary" (click)="publicarCurso(editCurso.id)">Publicar curso</button>
+      <button type="button" class="btn btn-warning" (click)="publicarCurso(editCurso.id)">Enviar para revision</button>
+    </div>
   </div>
+
+
+ 
   
 
 </section>

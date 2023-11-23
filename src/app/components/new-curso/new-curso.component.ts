@@ -29,7 +29,7 @@ export class NewCursoComponent implements OnInit{
     this.formNewCurso=this.formulario.group({      
       name:['', [Validators.required,Validators.maxLength(20), Validators.pattern(/^[a-z\s\u00E0-\u00FC\u00f1]*$/i),]],
       Descripcion:['', [Validators.required, Validators.maxLength(160),Validators.pattern(/^[a-z\s\u00E0-\u00FC\u00f1]*$/i)]],
-      tipo:['', [Validators.required]],
+      
       precio:['', [Validators.required, Validators.pattern(/^[0-9]+$/i)]],
       tipyRec:['', [Validators.required]],
       id_Usuario:['', [Validators.required]]
@@ -65,7 +65,7 @@ export class NewCursoComponent implements OnInit{
 
   get name(){ return this.formNewCurso.get('name');}
   get Descripcion(){ return this.formNewCurso.get('Descripcion');}
-  get tipo(){ return this.formNewCurso.get('tipo');}
+  
   get precio(){ return this.formNewCurso.get('precio');}
   get id_Usuario(){ return this.formNewCurso.get('id_Usuario');}
   

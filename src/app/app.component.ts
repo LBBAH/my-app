@@ -17,7 +17,7 @@ declare var paypal: { Buttons: (arg0: { createOrder: (data: any, action: any) =>
 })
 export class AppComponent implements OnInit {
   @ViewChild('paypal', { static: true }) paypalElement!: ElementRef;
-  user:any;
+  datosUsuarioLogeado:any;
   dataUser:Boolean=false;
   RegisterLogin:Boolean=true;
   logOutUser:Boolean=true;
@@ -78,8 +78,8 @@ export class AppComponent implements OnInit {
       var tokenHeader = new HttpHeaders({ 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' });
       
       this.serviceAuth.dataUser(tokenHeader).subscribe((res)=>{        
-        this.user=res;
-        console.log(this.user);
+        this.datosUsuarioLogeado=res;
+        console.log('datosUsuarios',this.datosUsuarioLogeado);
         
       },(err) =>{
         console.log(err)

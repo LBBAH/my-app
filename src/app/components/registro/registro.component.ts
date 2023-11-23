@@ -13,6 +13,8 @@ export class RegistroComponent implements OnInit {
   private emailPattern: any = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   private passPattern: any = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[ -/:-@\[-`{-~]).{6,64}$/;
 
+  formGmaikl:any;
+
   constructor( public formulario:FormBuilder, private dataService:IddServicesService ) { 
     this.formUser=this.formulario.group({
       name:['', [Validators.required, Validators.maxLength(30), Validators.pattern(/^[a-z\s\u00E0-\u00FC\u00f1]*$/i),]],
@@ -52,16 +54,23 @@ export class RegistroComponent implements OnInit {
       
     }
   }
+
+
   registrarUsuario(): any {
     if (this.formUser.valid) {
       const email = this.formUser.get('email')?.value;
   
+      
       axios.get(`https://api.hunter.io/v2/email-verifier?email=${email}&domain_search=uthh.edu.mx&api_key=b7c17eb8a0f0ee28d6606f2677710cd1bf7f1bc0`)
         .then(response => {
+          this.formGmaikl= response.data.data
           // Aquí puedes manejar la respuesta de la API
-          console.log(response.data);
+          console.log(this.formGmaikl);
+          console.log(response.data.data.result)
+          console.log(response.data.data)
+          console.log(response.data)
   
-          if (response.data.result != 'deliverable') {
+          if (response.data.data.result != "deliverable") {            
             // Si el correo no es válido, muestra una alerta y no realiza el registro
             alert('El correo ingresado no es válido');
             return;

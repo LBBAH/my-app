@@ -2,13 +2,20 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { IddServicesService } from 'src/app/service/idd-services.service';
+import { MatDialog } from '@angular/material/dialog';
+import { EditObjetivoComponent } from '../edit-objetivo/edit-objetivo.component';
+import { EditSeccionComponent } from '../edit-seccion/edit-seccion.component';
+import {VgApiService} from '@videogular/ngx-videogular/core';
+
+
 
 declare var YT: any;
 
 
 
 @Component({
-  selector: 'app-edit-curso-id',
+  selector: 'app-edit-curso-id', 
+    
   templateUrl: './edit-curso-id.component.html',
   styleUrls: ['./edit-curso-id.component.css']
 })
@@ -20,14 +27,21 @@ export class EditCursoIdComponent implements OnInit{
   objetivos:any;
   seccions:any;
   formNewimg: FormGroup;
+  formNewvideos:FormGroup;
   NewobjetivoCUrsos: FormGroup;
   NewSeccionCUrsos: FormGroup;
-  file: any;
+  file: any;  
+  video: any;
   formdata= new FormData();
-  datosCursosUpdate: FormGroup;
-  seccionesDeCurso:FormGroup;
+  formdataVideo= new FormData();
+  datosCursosUpdate: FormGroup;  
   typerECURSO:any;
   formdataUpdateUser= new FormData();
+  preload: string = 'auto';
+  api: VgApiService | undefined;
+
+  selectedFile: File | null = null;
+
   private player: any;
 
   
@@ -37,12 +51,11 @@ export class EditCursoIdComponent implements OnInit{
     private activeRouter:ActivatedRoute,        
     private dataService: IddServicesService,
     public formulario:FormBuilder,
+    private matDialog: MatDialog,
   ) { 
     this.NewSeccionCUrsos=this.formulario.group({      
       nombre:['', [Validators.required,Validators.maxLength(210), Validators.pattern(/^[a-z\s\u00E0-\u00FC\u00f1]*$/i),]],      
-      descripcion:['', [Validators.required,Validators.maxLength(210), Validators.pattern(/^[a-z\s\u00E0-\u00FC\u00f1]*$/i),]],      
-      url:['', [Validators.required,Validators.maxLength(210), Validators.pattern(/^[a-z\s\u00E0-\u00FC\u00f1]*$/i),]],      
-      id_curso:['', [Validators.required,Validators.maxLength(210), Validators.pattern(/^[a-z\s\u00E0-\u00FC\u00f1]*$/i),]],      
+      descripcion:['', [Validators.required,Validators.maxLength(210), Validators.pattern(/^[a-z\s\u00E0-\u00FC\u00f1]*$/i),]],                 
     })
     this.NewobjetivoCUrsos=this.formulario.group({      
       objetivo:['', [Validators.required,Validators.maxLength(210), Validators.pattern(/^[a-z\s\u00E0-\u00FC\u00f1]*$/i),]],      
@@ -50,6 +63,9 @@ export class EditCursoIdComponent implements OnInit{
     this.formNewimg=this.formulario.group({      
       file:[null, [Validators.required]],
     })    
+    this.formNewvideos=this.formulario.group({      
+      video:[null, [Validators.required]],
+    }) 
     this.datosCursosUpdate=this.formulario.group({      
       name:['', [Validators.required,Validators.maxLength(30), Validators.pattern(/^[a-z\s\u00E0-\u00FC\u00f1]*$/i),]],
       Descripcion:['', [Validators.required, Validators.maxLength(160),Validators.pattern(/^[a-z\s\u00E0-\u00FC\u00f1]*$/i)]],
@@ -57,28 +73,13 @@ export class EditCursoIdComponent implements OnInit{
       precio:['', [Validators.required, Validators.pattern(/^[0-9]+$/i)]],
       tipyRec:['', [Validators.required]],      
     })
-    this.seccionesDeCurso=this.formulario.group({      
-      nombre:['', [Validators.required,Validators.maxLength(30), Validators.pattern(/^[a-z\s\u00E0-\u00FC\u00f1]*$/i),]],
-      descripcion:['', [Validators.required, Validators.maxLength(160),Validators.pattern(/^[a-z\s\u00E0-\u00FC\u00f1]*$/i)]],
-      url:['', [Validators.required]],      
-    })
-  }  
-
-  onReady(event: YT.PlayerEvent) {
-    // Manejar el evento 'ready' del reproductor
+   
+  }
+  
+  onPlayerReady(api: VgApiService) {
+    this.api = api;
   }
 
-  onChange(event: YT.PlayerEvent) {
-    // Manejar el evento 'change' del reproductor
-  }
-
-  onStateChange(event: YT.OnStateChangeEvent) {
-    // Manejar el evento 'stateChange' del reproductor
-  }
-
-  onError(event: YT.OnErrorEvent) {
-    // Manejar el evento 'error' del reproductor
-  }
 
   ngOnInit(): void {
     this.id=this.activeRouter.snapshot.paramMap.get('id')  
@@ -92,12 +93,9 @@ export class EditCursoIdComponent implements OnInit{
     })
     
     this.datosActualizadosUsuario()
-  
-    this.dataService.showObejtivoCursoId({id_curso:this.id}).subscribe(res=>{
-      console.log(res)
-      this.objetivos=res
-    })   
+    
     this.obtenerSeccionesCursoId()
+    this.objetivoCursoId()
   }
 
   loadYoutubeApi(apiKey: string): void {
@@ -123,6 +121,53 @@ export class EditCursoIdComponent implements OnInit{
     };
 
     document.body.appendChild(tag);
+  }
+
+
+  registrarNuevaSeccion(){
+    if(!this.NewSeccionCUrsos){
+      return alert("llene los datos correctamente")   
+    }
+    this.dataService.nuevoSeccionCurso(this.id, this.NewSeccionCUrsos.value).subscribe(res=>{      
+      this.obtenerSeccionesCursoId()
+    })
+  }
+
+  borrarSeccion(id:any){
+    this.dataService.aborrarSeccionCursoId(id).subscribe(res=>{
+      this.obtenerSeccionesCursoId()
+    })
+  }
+
+  editarobjetivoCurso(objetivo:any, id:any){
+    this.matDialog.open(EditObjetivoComponent,
+      {
+        data:{
+          id:id,
+          objetivo:objetivo,          
+        },
+        width:"500px",
+        height: "500px"
+      });
+  }
+  editarSeccionCurso(id:any, nombre:any, descripcion:any){
+    this.matDialog.open(EditSeccionComponent,
+      {
+        data:{
+          id:id,
+          nombre:nombre,        
+          descripcion:descripcion  
+        },
+        width:"500px",
+        height: "500px"
+      });
+  }
+
+  borrarobjetivoCurso(id:any){
+    this.dataService.aborrarObjetivoCursoId(id).subscribe(res=>{      
+      this.objetivoCursoId()
+      
+    })
   }
 
  
@@ -155,12 +200,46 @@ export class EditCursoIdComponent implements OnInit{
     }    
   }
 
+  videoXD(id_seccion:any){
+    
+    if(this.formNewvideos.valid){  
+      console.log(this.formdataVideo)  
+      this.dataService.videoCurso(id_seccion,this.formdataVideo).subscribe(res=>{
+        let arr = Object.entries(res);
+        alert(arr[0][1]+ ', actualiza la pagina')
+        this.obtenerSeccionesCursoId()
+      })
+    }else{
+      alert('Debes subir una imagen')    
+    }    
+    console.log("hola")
+  }
+
+  videoUp(event:any){      
+    this.file = event.target.files[0];
+  
+    this.formdataVideo.append("video", this.file, this.file.name)
+    console.log(this.formdataVideo)
+  }
 
   imagenUp(event:any){      
     this.file=event.target.files[0];    
     this.formdata.append("file", this.file, this.file.name)
     console.log(this.formdata)   
   }
+
+  nuevoObjetivo(){
+    if(!this.NewobjetivoCUrsos.valid){  
+      return alert("llene los datos correctamente")   
+    }
+
+    this.dataService.nuevoObjetivoCurso(this.id,this.NewobjetivoCUrsos.value).subscribe(res=>{
+      console.log(res)
+      this.objetivoCursoId()
+    })
+  }
+
+  
 
   actualizarDatos(){
     if(!this.datosCursosUpdate.valid){
@@ -184,7 +263,18 @@ export class EditCursoIdComponent implements OnInit{
 
   obtenerSeccionesCursoId(){
     this.dataService.seccioneCursoId(this.id).subscribe(res=>{
-      this.seccions=res
+      this.seccions=res      
+    })
+  }
+
+  objetivoCursoId(){
+    this.dataService.objetivoCursoId({id_curso:this.id}).subscribe(res=>{
+      this.objetivos=res      
+    })
+  }
+
+  publicarCurso(id_curso:any){    
+    this.dataService.publicarCurso({id:id_curso}).subscribe(res=>{
       console.log(res)
     })
   }
@@ -198,6 +288,5 @@ export class EditCursoIdComponent implements OnInit{
 
 
   get nombre(){ return this.datosCursosUpdate.get('nombre');}
-  get descripcion(){ return this.datosCursosUpdate.get('descripcion');}
-  get url(){ return this.datosCursosUpdate.get('url');}
+  get descripcion(){ return this.datosCursosUpdate.get('descripcion');}  
 }

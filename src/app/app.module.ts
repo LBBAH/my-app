@@ -1,15 +1,12 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, ErrorHandler, NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { PreloadAllModules, Router, RouterModule, Routes } from '@angular/router';
 import { MaterialModule } from './material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { APP_INITIALIZER, ErrorHandler } from "@angular/core";
-import { Router } from "@angular/router";
-
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
@@ -31,9 +28,7 @@ import { ScrollToTopComponent } from './components/scroll-to-top/scroll-to-top.c
 import { MenuComponent } from './components/menu/menu.component';
 import { QuestionSecretPasswordComponent } from './components/question-secret-password/question-secret-password.component';
 import { PerfilUsuarioComponent } from './components/perfil-usuario/perfil-usuario.component';
-import { Injectable, Inject } from '@angular/core';
 
- 
 import {RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module} from 'ng-recaptcha';
 
 import { NgxCaptchaModule } from 'ngx-captcha';
@@ -48,10 +43,24 @@ import { Error500Component } from './components/error500/error500.component';
 import { StickyMessageComponent } from './components/sticky-message/sticky-message.component';
 import { BannerComponent } from './components/banner/banner.component';
 
-import { NgxGoogleAnalyticsModule, NgxGoogleAnalyticsRouterModule } from 'ngx-google-analytics';
 import { ImgUserComponent } from './components/img-user/img-user.component';
 import { ImgBackgroundUserComponent } from './components/img-background-user/img-background-user.component';
-import { YouTubePlayer, YouTubePlayerModule } from '@angular/youtube-player';
+import { YouTubePlayerModule } from '@angular/youtube-player';
+import { EditObjetivoComponent } from './components/edit-objetivo/edit-objetivo.component';
+import { EditSeccionComponent } from './components/edit-seccion/edit-seccion.component';
+
+import {VgCoreModule} from '@videogular/ngx-videogular/core';
+import {VgControlsModule} from '@videogular/ngx-videogular/controls';
+import {VgOverlayPlayModule} from '@videogular/ngx-videogular/overlay-play';
+import {VgBufferingModule} from '@videogular/ngx-videogular/buffering';
+
+import { NgxPayPalModule } from 'ngx-paypal';
+
+import * as Sentry from "@sentry/angular-ivy";
+import { ReproducirCursosComponent } from './components/reproducir-cursos/reproducir-cursos.component';
+import { VideoComponent } from './components/video/video.component';
+import { SatisfaccionFeedBackComponent } from './components/satisfaccion-feed-back/satisfaccion-feed-back.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 
 
@@ -73,6 +82,8 @@ const routes: Routes =[
   {path: 'perfilU/:id', component:PerfilUsuarioComponent},
   {path: 'editCursoid/:id', component:EditCursoIdComponent},
   {path: 'infoRecurso/:id', component:InfoRecursoIdComponent},
+  {path:'reproducirCurso/:id', component:ReproducirCursosComponent },
+  {path:'vide/:id', component:VideoComponent},
   { path: '400', component: Error400Component},
   { path: '500', component: Error500Component},
   { path: '**', component:NotFountComponent },    
@@ -80,7 +91,7 @@ const routes: Routes =[
 
 @NgModule({
   declarations: [
-    AppComponent,  
+    AppComponent,      
     HomeComponent,
     SearchComponent,
     FooterComponent,
@@ -101,8 +112,7 @@ const routes: Routes =[
     EditUserComponent,
     AlertNewQuestionSecretComponent,
     ChangePasswordComponent,
-    NewCursoComponent,
-    EditCursoIdComponent,
+    NewCursoComponent,        
     InfoRecursoIdComponent,
     StickyMessageComponent,
     BannerComponent,
@@ -111,10 +121,20 @@ const routes: Routes =[
     NotFountComponent,
     QuienesSomosComponent,
     ImgUserComponent,
-    ImgBackgroundUserComponent,        
+    ImgBackgroundUserComponent,   
+    EditObjetivoComponent,
+    EditSeccionComponent,
+    EditCursoIdComponent,
+    ReproducirCursosComponent,
+    VideoComponent,
+    SatisfaccionFeedBackComponent
   ],
   imports: [        
     BrowserModule,    
+    VgCoreModule,
+    VgControlsModule,
+    VgOverlayPlayModule,
+    VgBufferingModule, 
     AppRoutingModule,  
     BrowserAnimationsModule,
     FormsModule,
@@ -124,21 +144,43 @@ const routes: Routes =[
     CommonModule,
     RecaptchaV3Module,
     HttpClientModule, 
-    YouTubePlayerModule,
-
-    RouterModule.forRoot(
+    YouTubePlayerModule,               
+    NgxPayPalModule,
+    RouterModule.forRoot( 
       routes, { preloadingStrategy: PreloadAllModules }
     ),
-    MaterialModule
+    MaterialModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    })
   ],
   providers: [
 
- 
+    {
+      provide: ErrorHandler,
+      useValue: Sentry.createErrorHandler({
+        showDialog: false,
+      }),
+    },
+    {
+      provide: Sentry.TraceService,
+      deps: [Router],
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: () => () => {},
+      deps: [Sentry.TraceService],
+      multi: true,
+    },
     {
       provide: RECAPTCHA_V3_SITE_KEY,
       useValue: 'pon_la_key_de_google',
     }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent
+  ]
 })
 export class AppModule { }

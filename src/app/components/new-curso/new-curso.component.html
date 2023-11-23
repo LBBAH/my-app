@@ -24,18 +24,10 @@
   </div>
 
 
-  <label class="w-100">Tipo:</label>
-  <select  formControlName="tipo"  class="form-control" style="padding-bottom: 15px;">              
-    <option value="gratis">Gratis</option>
-    <option value="paga">Paga</option>
-  </select>  
-  <div *ngIf=" tipo?.invalid && (tipo?.dirty || tipo?.touched)" class="alert alert-danger">
-    <div *ngIf="tipo?.errors?.['required']">Campo requerido</div>
-  </div>
-
+  
   <div class="form-floating input-group-prepend" style="padding-bottom: 15px;">
     <input type="text" formControlName="precio" class="form-control" placeholder="Precio (Si es gratis marcar como 0)">
-    <label for="floatingInput">Precio (Si es gratis marcar como 0)</label>
+    <label for="floatingInput">Precio (Precio Minimo $1 MX)</label>
   </div>   
   <div *ngIf=" precio?.invalid && (precio?.dirty || precio?.touched)" class="alert alert-danger">
     <div *ngIf="precio?.errors?.['required']">Campo requerido</div>

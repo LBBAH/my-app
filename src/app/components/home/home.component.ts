@@ -30,8 +30,8 @@ export class HomeComponent implements OnInit{
   }
   ngOnInit():void{
     Aos.init()
-    this.getDataLS();
-    this.getDataLSsee();
+    //this.getDataLS();
+    //this.getDataLSsee();
   }
 
   getDataLS(){

@@ -30,3 +30,39 @@
 .marginLabels{
     margin:8px
 }
+
+
+.contenedorMultimedia{
+    display: flex;
+}
+
+.contenedorMultimedia-hijo{
+    width: 50%; height: 300px;
+}
+
+.contenedorMultimedia-formulario{
+    padding: 20px; 
+    width: 50%;
+}
+
+.backgroundVistaPrevia{
+    background-size: 100% 100%;width: 50%; height: 300px;
+}
+
+
+@media only screen and (max-width: 768px) {
+
+    .contenedorMultimedia{
+        display: block;
+    }
+  
+    .contenedorMultimedia-hijo{
+        width: 100%;
+    }
+    .contenedorMultimedia-formulario{
+        width: 100%;
+    }
+    .backgroundVistaPrevia{
+        width: 100%; 
+    }
+}

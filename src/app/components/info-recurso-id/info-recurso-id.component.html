@@ -1,19 +1,25 @@
+
+<div class="container">
+
+  <div class="rounded-top text-white d-flex flex-row" style="background-image: url('https://educacionespecialmx.site/idd_Educatio_back/public_html/img/imgVistaRecursos/{{editCurso.vistaprevia}}'); background-size:cover; width: 100% ;height:600px;">
+    <div class="ms-4 mt-5 d-flex flex-column" >
+        <img src="https://educacionespecialmx.site/idd_Educatio_back/public_html/img/cursos.png"
+          alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
+          style="width: 150px; z-index: 1">                
+    </div>
+    <div class="ms-3" style="margin-top: 130px;">
+      <h1 class="bg-light text-dark">{{editCurso.nombre}}</h1>        
+    </div>
+  </div>
+
+</div>
+
+
 <section class=" gradient-custom-2">
   <div class="container py-2 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div >
-        <div class="card" >
-          <div class="rounded-top text-white d-flex flex-row" style="background-image: url('https://educacionespecialmx.site/idd_Educatio_back/public_html/img/imgVistaRecursos/{{editCurso.vistaprevia}}'); background-size: cover;height:250px;">
-            <div class="ms-4 mt-5 d-flex flex-column" >
-                <img src="https://educacionespecialmx.site/idd_Educatio_back/public_html/img/cursos.png"
-                  alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
-                  style="width: 150px; z-index: 1">                
-            </div>
-            <div class="ms-3" style="margin-top: 130px;">
-              <h1 class="bg-light text-dark">{{editCurso.nombre}}</h1>
-                
-            </div>
-          </div>
+        <div class="card" >         
           <div class="p-4 text-black" style="background-color: #f8f9fa;">
           </div>           
           <div class="card-body p-4 text-black">
@@ -25,52 +31,119 @@
                 <p class="font-italic mb-0"><b>Precio: $</b>{{editCurso.precio}}</p>
                 <p class="font-italic mb-0"><b>De:</b>{{editCurso.nombrePropietario}}</p>
               </div>               
-            </div>
-            
-            <div class="d-flex justify-content-between align-items-center mb-4">
-              <p class="lead fw-normal mb-0">Informacion del curso</p>                  
-            </div>
-            <div class="row g-2">              
-              <div class="col mb-2">                  
-                  <img src="https://educacionespecialmx.site/idd_Educatio_back/public_html/img/imgVistaRecursos/{{editCurso.vistaprevia}}"
-                    alt="image 1" class="w-100 rounded-3">
-                    <p class="lead fw-normal mb-1">Secciones del curso</p>
-                  <div class="p-4" >
-                    <div class="accordion" id="accordionExample" *ngFor="let s of seccion">
-                      <div class="accordion-item">
-                        <h2 class="accordion-header" id="headingOne">
-                          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            {{s.nombre}}
-                          </button>
-                        </h2>
-                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOn" data-bs-parent="#accordionExample">
-                          <div class="accordion-body">
-                            {{s.descripcion}}
-                          </div>
-                        </div>
-                      </div>                        
-                    </div>                                     
-                  </div> 
-                </div>               
-                <div class="col mb-2">
-                  <p class="lead fw-normal mb-1">Objectivos del curos</p>
-                  <div class="p-4" >
-                    <p class="font-italic mb-1" *ngFor="let o of objetivos"> <b>*</b> {{o.objetivo}}</p>  
-                  </div>                                            
-                </div>                                                    
-              </div>      
-              <div class="col mb-2" *ngIf="cursodeUsuario" >
-                <div *ngFor="let item of editCurso">
-                  <button type="button" class="btn btn-primary" (click)="pago(item.nombre, item.precio, item.id )" >Obtener curso</button>                                          
-                </div>                
-              </div>        
+            </div>                        
+                    
             </div>
           </div>
         </div>
-      </div>
     </div>
+  </div>
+
+  <div class="container">    
+    <div class="contenedorObjetivoSecciones">
+      <div class="objetvioSeccion">
+        <h3>Temario</h3>
+        <div class="accordion" id="accordionExample" *ngFor="let s of seccion">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                {{s.nombre}}
+              </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOn" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                {{s.descripcion}}
+              </div>
+            </div>
+          </div>                        
+        </div> 
+      </div>
+
+      <div class="objetvioSeccion">
+        Obejtivos
+        <p class="font-italic mb-1" *ngFor="let o of objetivos" style="margin: 10px;"> {{o.objetivo}}</p>  
+      </div>
+      
+    </div>        
+
+  </div>
+
+  <div class="container" style="width: 100% ;text-align: end;" *ngIf="cursodeUsuario">
+                 
+    <div *ngIf="mostrarBotonDeCompra">
+      <button type="button" 
+      style="
+                background-color: #04AA6D; /* Green */
+                border: none;
+                color: white;
+                padding: 15px 32px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                "
+      (click)="pago(editCurso.nombre, editCurso.precio, editCurso.id )" >Obtener curso</button>
+    </div>   
+  </div>
+
+  <div class="container" style="width: 100% ;text-align: center;">    
     <div class="container" #paypal>                       
     </div>
+  </div>
+
+
+  <div class="container" style="width: 100%; padding: 30px;">
+    
+    <h2>Reseñas</h2>  
+
+    <div *ngIf="mostrarResennas">
+      <div>
+        <p>Reseñas buenas: {{numeroLikes_dislike.like}}</p>
+        <p>Reseñas Negativas: {{numeroLikes_dislike.dislike}}</p>
+      </div>
+      <div *ngFor="let o of resennas">
+
+        <div style="width: 30px; height: 30px;">
+
+        </div>
+        <div>
+
+          <div>
+            <b>
+              {{o.name}}
+            </b>          
+          </div>
+
+          <div>
+            <p>{{o.resenna}}</p>
+          </div>
+
+          <div style="width: 100%; display: flex;">
+            <div *ngIf="o.likeDislike == 1">
+              <img src="../assets/img/like.png" alt="" style="width: 20px;" class="like">
+            </div>
+            <div *ngIf="o.likeDislike == 0">
+              <img src="../assets/img/dislike.png" alt="" style="width: 20px;" class="dislike">
+            </div>
+          </div>
+
+
+
+        </div>        
+      </div>
+    </div>
+
+    <div *ngIf="SinResennas">
+      <div>
+        <p>Sin Reseñas aun...</p>            
+      </div>
+    </div>
+
+  </div>
+
+
+  
+  
   </section>
  
 

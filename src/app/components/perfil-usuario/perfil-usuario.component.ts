@@ -146,6 +146,11 @@ export class PerfilUsuarioComponent implements OnInit{
     })
   }
 
+
+  reproducirCurso(id_curso:any){
+    this.router.navigate(['reproducirCurso/',id_curso])
+  }
+
   imagenesUsuario(id_user:any){
     this.dataService.imgByIdUser(id_user).subscribe(res=>{
       this.imagenesPerfil=res;

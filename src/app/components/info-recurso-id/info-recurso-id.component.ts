@@ -6,6 +6,10 @@ import { LocalStorageServiceService } from 'src/app/service/local-storage-servic
 import * as AOS from 'aos'
 import { BehaviorSubject, subscribeOn } from 'rxjs';
 declare var paypal: { Buttons: (arg0: { createOrder: (data: any, action: any) => any; onApprove: (data: any, actions: any) => Promise<void>; onError: (err: any) => void; }) => { (): any; new(): any; render: { (arg0: any): void; new(): any; }; }; };
+import { IPayPalConfig, ICreateOrderRequest } from 'ngx-paypal';
+import { MatDialog } from '@angular/material/dialog';
+import { SatisfaccionFeedBackComponent } from '../satisfaccion-feed-back/satisfaccion-feed-back.component';
+
 
 
 @Component({
@@ -19,6 +23,13 @@ export class InfoRecursoIdComponent implements OnInit{
   @ViewChild('paypal', { static: true }) paypalElement!: ElementRef;
   private isLoggedIn = new BehaviorSubject<boolean>(false);
 
+
+  mostrarBotonDeCompra: boolean = true;
+
+
+  public payPalConfig?: IPayPalConfig;
+
+
   
   id:any
   editCurso:any;
@@ -26,14 +37,21 @@ export class InfoRecursoIdComponent implements OnInit{
   seccion:any;
   recurso:any;
   titulo:any;
+  resennas:any
   valoresCampo: any[] = [];
   cursodeUsuario:Boolean = false;
+
+  mostrarResennas:Boolean = false;
+  SinResennas:Boolean = false;
+  numeroLikes_dislike:any;
   
   constructor(
     private activeRouter:ActivatedRoute,        
     private dataService: IddServicesService,
     private router:Router,
-    private LocalStorageServiceService: LocalStorageServiceService
+    private LocalStorageServiceService: LocalStorageServiceService,
+    private matDialog: MatDialog,
+
   ) { 
     
   }
@@ -51,6 +69,7 @@ export class InfoRecursoIdComponent implements OnInit{
         
         let arr = Object.entries(res);
         
+        console.log(res)
         if(arr[0][0] == "success"){
           this.cursodeUsuario = false
         }else{
@@ -76,8 +95,46 @@ export class InfoRecursoIdComponent implements OnInit{
     })
     this.getDataLS()
 
-   
+    this.obtenerReseñas(this.id)
+    this.getCountLikeDislike(this.id)
     
+  }
+
+  obtenerReseñas(id_recurso:any){
+    this.dataService.getReseñaCursos({id:id_recurso}).subscribe(res=>{
+      this.resennas=res  
+      
+      if(this.resennas == null){
+        this.mostrarResennas=false
+        this.SinResennas=true
+      }else{
+        this.mostrarResennas=true
+        this.SinResennas=false
+      }
+    
+    })
+  }
+
+  getCountLikeDislike(id_recurso:any){
+    this.dataService.getCountLikeDislike({id:id_recurso}).subscribe(res=>{
+      this.numeroLikes_dislike=res
+      console.log(this.numeroLikes_dislike)
+    })
+  }
+
+  likeDislike(option:any){
+
+    const like1 = document.getElementsByClassName('likedislike1');
+    const dislike0 = document.getElementsByClassName('likedislike0');
+
+    const like = document.getElementsByClassName('like');
+    const dislike = document.getElementsByClassName('dislike');
+
+    if(like1 && dislike0 && like && dislike){
+
+    }
+
+
   }
 
   status(){
@@ -137,6 +194,11 @@ export class InfoRecursoIdComponent implements OnInit{
           if(arr[0][0] == "success"){
             alert(arr[0][1])
           }
+          this.matDialog.open(SatisfaccionFeedBackComponent,
+            {        
+              width:"600px",
+              height: "600px"
+          });
         })
         const datasee = { title: nombre, id_user: iduser};
         this.LocalStorageServiceService.setItem('datasee', datasee);
@@ -147,6 +209,7 @@ export class InfoRecursoIdComponent implements OnInit{
       }
     }).
     render(this.paypalElement.nativeElement)
+    this.mostrarBotonDeCompra = false
   
   }
 
@@ -175,6 +238,14 @@ export class InfoRecursoIdComponent implements OnInit{
 
   verCursosId(id:any){    
     this.router.navigate(['infoRecurso/', id]); 
+  }
+
+  satisfaccionFeedBack(){
+    this.matDialog.open(SatisfaccionFeedBackComponent,
+      {        
+        width:"600px",
+        height: "600px"
+      });
   }
 
 }

@@ -1,0 +1,40 @@
+<div style="width: 100%;">
+    <img src="https://educacionespecialmx.site/idd_Educatio_back/public_html/img/imgVistaRecursos/{{datisCursos.vistaprevia}}" alt="" style="width: 100%; height: 100%;">
+</div>
+
+
+<div class="container" style="padding:20px">
+
+    <h1>{{datisCursos.name}}</h1>
+    <p>{{datisCursos.Descripcion}}</p>
+</div>
+
+
+<div class="container">
+    <div>
+        <h1 style="padding-left: 20px; padding-right: 20px; padding-top: 20px;" >Objetivos</h1>
+
+        <ul *ngFor="let item of objetivosCUrsos">
+            <li>{{item.objetivo}}</li>
+        </ul>
+    </div>
+</div>
+
+<div class="container">    
+
+        <h1 style="padding-left: 20px; padding-right: 20px; padding-top: 20px;">Temario</h1>          
+        <div style="width:100%; padding: 20px; " *ngFor="let item of temarioCurso">
+            
+            <div style="display: flex;">
+                <div style="width:90%">
+                    <b>Tema:</b> {{item.nombre}} <br>
+                    <p>Descripcion {{item.descripcion}}</p>
+                </div>
+                <div style="width:10%; text-align: end;">
+                    <img src="./assets/img/play.png" alt="" style="width:20px" (click)="CambiarReproduccion(item.id)">
+
+                </div>
+            </div>        
+
+        </div>    
+</div>

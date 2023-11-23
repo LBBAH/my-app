@@ -11,8 +11,8 @@ export class IddServicesService {
 
   constructor( private httpClient: HttpClient ) { }
     
-  //private apiUrl = 'https://educacionespecialmx.site/idd_Educatio_back/public_html/api';
-  private apiUrl = 'http://127.0.0.1:8000/api';
+  private apiUrl = 'https://educacionespecialmx.site/idd_Educatio_back/public_html/api';
+  //private apiUrl = 'http://127.0.0.1:8000/api';
 
   private apiUrlML = 'http://127.0.0.1:5000//apiv2/recomendaciones?titulo=';
 
@@ -175,6 +175,60 @@ export class IddServicesService {
 
     seccioneCursoId( id:any){
       return this.httpClient.get(`${this.apiUrl}/seccionesCursoId/`+id);
+    }
+
+    objetivoCursoId(info:any){
+      return this.httpClient.post(`${this.apiUrl}/showObejtivoCursoId`, info);
+    }
+
+    nuevoObjetivoCurso(id:any, info:any){
+      return this.httpClient.post(`${this.apiUrl}/nuevoObjetivoCurso/`+id,info);
+    }
+
+    actualizarObjetivoCursoId(id:any, info:any){
+      return this.httpClient.post(`${this.apiUrl}/actualizarObjetivoCursoId/`+id,info);
+    }
+
+    aborrarObjetivoCursoId(id:any){
+      return this.httpClient.delete(`${this.apiUrl}/aborrarObjetivoCursoId/`+id);
+    }
+
+    aborrarSeccionCursoId(id:any){
+      return this.httpClient.delete(`${this.apiUrl}/aborrarSeccionCursoId/`+id);
+    }
+
+    actualizarSeccionCursoId(id:any, info:any){
+      return this.httpClient.post(`${this.apiUrl}/actualizarSeccionCursoId/`+id,info);
+    }
+
+    nuevoSeccionCurso(id:any, info:any){
+      return this.httpClient.post(`${this.apiUrl}/nuevoSeccionCurso/`+id,info);
+    }
+
+    videoCurso( id:any, info:any){
+      return this.httpClient.post(`${this.apiUrl}/videoCurso/`+id, info);
+    }
+
+    publicarCurso(id:any){
+      return this.httpClient.post(`${this.apiUrl}/publicarCurso`,id);
+    }
+
+
+    getReseñaCursos(id:any){
+      return this.httpClient.post(`${this.apiUrl}/getReseñaCursos`,id);
+    }
+
+    getCountLikeDislike(id:any){
+      return this.httpClient.post(`${this.apiUrl}/getCountLikeDislike`,id);
+    }
+
+    videoReproduccion(id:any){
+      return this.httpClient.get(`${this.apiUrl}/videoReproduccion/`+id);
+    }
+
+
+    addSatisfaccion(form:any){
+      return this.httpClient.post(`${this.apiUrl}/addSatisfaccion`, form);
     }
 
 }

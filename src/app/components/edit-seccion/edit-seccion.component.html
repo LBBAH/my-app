@@ -1,0 +1,15 @@
+<form class="p-3" [formGroup]="formSeccionCurso" >
+    <div class="form-floating">
+      <input type="text" formControlName="nombre" class="form-control" placeholder="Objetivo">
+      <label for="floatingInput">Nombre</label>
+    </div>
+    <div class="form-floating">
+        <input type="text" formControlName="descripcion" class="form-control" placeholder="Objetivo">
+        <label for="floatingInput">Nombre</label>
+      </div>
+   
+    <div>
+      <button class="btn btn-danger" (click)="closeDialog()">Cerrar</button>
+      <button  class="btn btn-info" (click)="UpdateUserz()" >Actualizar</button>
+    </div>   
+</form>

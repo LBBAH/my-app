@@ -27,6 +27,10 @@
   .tipoPagaGratis{
     color: rgb(20, 24, 230);
   }
+
+  .numerosDeDatos{
+    max-width: 100%; height: 70px; overflow: hidden;
+  }
   
   
   .cursos-datos {    

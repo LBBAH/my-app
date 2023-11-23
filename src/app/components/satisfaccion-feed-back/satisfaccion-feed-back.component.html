@@ -1,0 +1,17 @@
+<form [formGroup]="myForm" (ngSubmit)="submitForm()">
+    <div>
+      <label for="agrado">¿Que te parece nuestros servicios hasta ahora?:</label>
+      <select formControlName="agrado" id="agrado">
+        <option value="Bien">Bien</option>
+        <option value="Mal">Mal</option>
+        <option value="Regular">Regular</option>
+      </select>
+    </div>
+    
+    <div>
+      <label for="opnion">Añade una opnion:</label>
+      <textarea formControlName="opnion" id="opnion"></textarea>
+    </div>
+
+    <button type="submit" [disabled]="myForm.invalid">Enviar</button>
+  </form>

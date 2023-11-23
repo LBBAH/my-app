@@ -1,0 +1,21 @@
+.contenedorObjetivoSecciones{
+    width: 100%; 
+    display: flex;
+}
+
+.objetvioSeccion{
+    width: 100%; 
+    margin: 30px;
+}
+
+@media only screen and (max-width: 600px) {
+
+    .contenedorObjetivoSecciones{
+        display: block;
+    }
+    .objetvioSeccion{
+        margin:0px
+    }
+  
+    
+}

@@ -17,7 +17,7 @@
         <div class="col text-end navbarDiv" *ngIf="dataUser">
                 <a [routerLink]="['/quienesSomos']" class="text-dark links">Quienes Somos</a>
                 |
-                <a (click)="perfilUser(user.id)" class="text-dark links" >{{user.nameUser}}</a>
+                <a (click)="perfilUser(datosUsuarioLogeado.id)" class="text-dark links"> {{datosUsuarioLogeado.nameUser}} </a>
                 |
                 <a (click)="logout()" class="text-dark links" >LogOut</a>        
         </div>
@@ -54,7 +54,7 @@
                         <div>
                                 <img style="width: 90px; height: 90px;border-radius: 50%; padding-bottom: 6px;" [src]="imagenesPerfil.perfil_user == ''? 'https://educacionespecialmx.site/imgAppWeb/userimage.png' : 'https://educacionespecialmx.site/idd_Educatio_back/public_html/img/imgUser/' + imagenesPerfil.perfil_user" alt="">
                                 <p style="color: #ffffff;" *ngIf="RegisterLogin"> <b>Sin sesion Iniciada</b></p>
-                                <p style="color: #ffffff;" *ngIf="dataUser" (click)="perfilUser(user.id)"><b>{{user.nameUser}}</b></p>
+                                <p style="color: #ffffff;" *ngIf="dataUser" (click)="perfilUser(datosUsuarioLogeado.id)"><b>{{datosUsuarioLogeado.nameUser}}</b></p>
                         </div>
                 </div>
         </div>
@@ -67,7 +67,7 @@
                         <div>
                                 <img style="width: 90px; height: 90px; border-radius: 50%; padding-bottom: 6px;" src="https://educacionespecialmx.site/imgAppWeb/userimage.png" alt="">
                                 <p style="color: #ffffff;" *ngIf="RegisterLogin"> <b>Sin sesion Iniciada</b></p>
-                                <p style="color: #ffffff;" *ngIf="dataUser" (click)="perfilUser(user.id)"><b>{{user.nameUser}}</b></p>
+                                <p style="color: #ffffff;" *ngIf="dataUser" (click)="perfilUser(datosUsuarioLogeado.id)"><b>{{datosUsuarioLogeado.nameUser}}</b></p>
                         </div>
                 </div>
         </div>
