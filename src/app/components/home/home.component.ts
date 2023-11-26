@@ -4,6 +4,8 @@ import { LocalStorageServiceService } from 'src/app/service/local-storage-servic
 import { IddServicesService } from 'src/app/service/idd-services.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import * as Aos from 'aos';
+import { NotificationServiceService } from 'src/app/service/notification-service.service';
+
 
 
 @Component({
@@ -25,13 +27,19 @@ export class HomeComponent implements OnInit{
   constructor (private http:HttpClient, 
     private serviceAuth:IddServicesService, 
     private router:Router,
-    private LocalStorageServiceService: LocalStorageServiceService){
+    private LocalStorageServiceService: LocalStorageServiceService,
+    private Notificaciones:NotificationServiceService){
     
   }
   ngOnInit():void{
     Aos.init()
-    //this.getDataLS();
-    //this.getDataLSsee();
+    this.mostrarNotificacion()
+  }
+
+  mostrarNotificacion(): void {
+    this.Notificaciones.showNotification('¿Ya te registraste?', {
+      body: 'Subscribete para ver todos los contenidos del sitio te esperamos!!!',
+    });
   }
 
   getDataLS(){

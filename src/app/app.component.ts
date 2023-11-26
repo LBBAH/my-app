@@ -4,6 +4,8 @@ import { BehaviorSubject } from 'rxjs';
 import { IddServicesService } from './service/idd-services.service';
 import { Router } from '@angular/router';
 import { LocalStorageServiceService } from 'src/app/service/local-storage-service.service';
+import { SwPush } from '@angular/service-worker';
+import { NotificationServiceService } from './service/notification-service.service';
 
 
 
@@ -17,6 +19,10 @@ declare var paypal: { Buttons: (arg0: { createOrder: (data: any, action: any) =>
 })
 export class AppComponent implements OnInit {
   @ViewChild('paypal', { static: true }) paypalElement!: ElementRef;
+
+  respuesta: any;
+  readonly VAPID_PUBLIC_KEY = "BHRjCWdlrvy3AKfpOReUXmoY63yXwLa9gfY57cwCS9to-IGYAuuxU8pIsTo6iqcAeHYC5zc7OSFiW2uvauNJNkk";
+
   datosUsuarioLogeado:any;
   dataUser:Boolean=false;
   RegisterLogin:Boolean=true;
@@ -34,7 +40,9 @@ export class AppComponent implements OnInit {
   constructor (private http:HttpClient, 
     private serviceAuth:IddServicesService, 
     private router:Router,
-    private LocalStorageServiceService: LocalStorageServiceService){
+    private LocalStorageServiceService: LocalStorageServiceService,
+    private swPush: SwPush,
+    private Notificaciones:NotificationServiceService){
     
   }
 
@@ -92,8 +100,19 @@ export class AppComponent implements OnInit {
     }
 
     this.datosImagenesPerfil()
+    this.Notificaciones.requestPermission();
+    this.mostrarNotificacion()
     
   }
+
+  mostrarNotificacion(): void {
+    this.Notificaciones.showNotification('¿Ya te registraste?', {
+      body: 'Subscribete para ver todos los contenidos del sitio te esperamos!!!',
+    });
+  }
+
+
+
 
   getDataLS(){    
 

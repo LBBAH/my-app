@@ -231,4 +231,10 @@ export class IddServicesService {
       return this.httpClient.post(`${this.apiUrl}/addSatisfaccion`, form);
     }
 
+    guardarEnviar(data: any): any {
+      return this.httpClient.post(`http://localhost:9000/api/guardar`, {
+        data: data
+      })
+    }
+
 }
